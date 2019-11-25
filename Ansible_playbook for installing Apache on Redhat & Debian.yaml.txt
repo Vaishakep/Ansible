@@ -1,0 +1,34 @@
+---
+- name: "Apache on Debian and RedHat"
+  become: yes
+  hosts: all
+  tasks:
+
+   - name: "Installing Apache on Debian"
+     when: ansible_os_family == "Debian"
+     apt:
+        name: apache2
+        state: present
+        update_cache: true
+
+   - name: "Restarting/Enabling on Debian"
+     when: ansible_os_family == "Debian"
+     service:
+        name: apache2
+        state: restarted
+        enabled: true
+
+   - name: "Installing Apache On Redhat"
+     yum:
+        name: httpd
+        state: present
+     when: ansible_os_family == "RedHat"
+
+
+   - name: "Restarting/Enabling in Redhat"
+     service:
+        name: httpd
+        state: restarted
+        enabled: true
+     when: ansible_os_family == "RedHat"
+                          
